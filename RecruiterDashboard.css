@@ -1,64 +1,193 @@
-/* Add these animations and styles */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Modern Dashboard Styles */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #6B46C1 0%, #B83280 100%);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-@keyframes slideIn {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
-}
-
-.dashboard-card {
-  animation: fadeIn 0.5s ease-out;
+/* Dashboard Layout */
+.dashboard-container {
+  padding: 2rem;
+  background-color: #f7fafc;
 }
 
 .dashboard-header {
   animation: slideIn 0.5s ease-out;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--primary-gradient);
+  border-radius: 1rem;
+  color: white;
+  box-shadow: var(--card-shadow);
 }
 
-/* Card hover effects */
-.card-hover {
+/* Enhanced Card Styles */
+.dashboard-card {
+  animation: fadeIn 0.5s ease-out;
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
 }
 
-.card-hover:hover {
+.dashboard-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Gradient backgrounds */
-.gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+/* Statistics Cards */
+.stat-card {
+  background: var(--secondary-gradient);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-/* Animated icons */
-.icon-pulse {
-  animation: pulse 2s infinite;
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  animation: countUp 2s ease-out;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+/* Enhanced Table Styles */
+.dashboard-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1rem 0;
 }
 
-/* Modal animations */
-.modal-enter {
-  animation: modalFadeIn 0.3s ease-out;
+.dashboard-table th {
+  background: #f8fafc;
+  padding: 1rem;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+.dashboard-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-/* Loading spinner animation */
-.spinner {
-  animation: spin 1s linear infinite;
+.dashboard-table tr:hover {
+  background-color: #f8fafc;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-} 
+/* Status Badges */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-active {
+  background-color: #C6F6D5;
+  color: #2F855A;
+}
+
+.status-pending {
+  background-color: #FEEBC8;
+  color: #C05621;
+}
+
+/* Enhanced Button Styles */
+.dashboard-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Search Input */
+.dashboard-search {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+  transition: all 0.3s ease;
+}
+
+.dashboard-search:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Improved Animations */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateX(-100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes countUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Loading States */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .dashboard-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
