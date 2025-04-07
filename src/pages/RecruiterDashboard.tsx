@@ -408,8 +408,8 @@ const RecruiterDashboard = () => {
         <div className="bg-black text-white p-6 rounded-lg mb-6">
           <h2 className="text-2xl font-semibold mb-2">Hello Recruiter!</h2>
           <p className="mb-4">You have 16 new applications. It's a lot of work for today! So let's start.</p>
-          <button className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-100">
-            Review it!
+          <button onClick={() => navigate("/jobs")}  className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-100">
+            Post Job
           </button>
         </div>
      
