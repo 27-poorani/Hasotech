@@ -126,270 +126,256 @@ const JobManagement = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-black">
+    <div className="flex min-h-screen bg-white">
       <LeftNavigation />
       
-      <div className="flex-1 p-6 ml-64 pt-20">
-        <div className="max-w-7xl mx-auto p-8 rounded-lg" style={{ 
-          backgroundColor: '#242424',
-          border: '1px solid #ffd700',
-          boxShadow: '0 0 10px rgba(177, 150, 14, 0.2)'
-        }}>
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold" style={{ color: '#ffd700' }}>Post New Job</h1>
-            <button
-              onClick={() => navigate("/recruiter-dashboard")}
-              className="px-4 py-2 rounded-lg hover:bg-gray-800"
-              style={{
-                backgroundColor: '#333',
-                color: '#ffd700',
-                border: '1px solid #ffd700'
-              }}
-            >
-              Back to Dashboard
-            </button>
-          </div><br></br>
-          <form onSubmit={handlePostJob} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Job Title*</label>
-                  <input
-                    type="text"
-                    value={newJobTitle}
-                    onChange={(e) => setNewJobTitle(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Experience Required*</label>
-                  <input
-                    type="text"
-                    value={newJobExperience}
-                    onChange={(e) => setNewJobExperience(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Skills Required* (comma-separated)</label>
-                  <input
-                    type="text"
-                    value={newJobSkills}
-                    onChange={(e) => setNewJobSkills(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
-                    placeholder="e.g. React, Node.js, TypeScript"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Notice Period*</label>
-                  <input
-                    type="text"
-                    value={noticePeriod}
-                    onChange={(e) => setNoticePeriod(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Right Column */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Technical Knowledge* (comma-separated)</label>
-                  <input
-                    type="text"
-                    value={technicalKnowledge}
-                    onChange={(e) => setTechnicalKnowledge(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Attitude Requirements*</label>
-                  <input
-                    type="text"
-                    value={attitudeRequired}
-                    onChange={(e) => setAttitudeRequired(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Recruiter Email*</label>
-                  <input
-                    type="email"
-                    value={newRecruiterEmail}
-                    onChange={(e) => setNewRecruiterEmail(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
-                  />
-                </div>
-              </div>
+      <div className="flex-1 ml-0" style={{ marginLeft: '-150px' }}>
+        {/* Header remains the same */}
+        
+        {/* Adjusted card size and padding */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6" style={{ width: '150%' }}>
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-xl font-semibold text-gray-800">Create New Job</h2>
+            
             </div>
 
-            {/* Full Width Fields */}
-            <div>
-              <label className="block mb-2" style={{ color: '#ffd700' }}>Job Description*</label>
-              <textarea
-                value={newJobDescription}
-                onChange={(e) => setNewJobDescription(e.target.value)}
-                required
-                className="w-full px-4 py-2 rounded-lg"
-                style={{
-                  backgroundColor: '#333',
-                  color: '#fff',
-                  border: '1px solid #ffd700'
-                }}
-                rows={4}
-              />
-            </div>
-
-            {/* Number of Rounds */}
-            <div>
-              <label className="block mb-2" style={{ color: '#ffd700' }}>Number of Interview Rounds*</label>
-              <select
-                value={numberOfRounds}
-                onChange={(e) => setNumberOfRounds(Number(e.target.value))}
-                required
-                className="w-full px-4 py-2 rounded-lg"
-                style={{
-                  backgroundColor: '#333',
-                  color: '#fff',
-                  border: '1px solid #ffd700'
-                }}
-              >
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-              </select>
-            </div>
-
-            {/* Panelist Section */}
-            {[...Array(numberOfRounds)].map((_, index) => (
-              <div key={index} className="p-6 rounded-lg mb-4" style={{
-                backgroundColor: '#333',
-                border: '1px solid #ffd700'
-              }}>
-                <h3 className="text-xl font-medium mb-4" style={{ color: '#ffd700' }}>
-                  Round {index + 1} Panelist*
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Form with adjusted field sizes */}
+            <form onSubmit={handlePostJob} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Input fields with increased size */}
+                <div className="space-y-6">
                   <div>
-                    <label className="block mb-2" style={{ color: '#ffd700' }}>Email*</label>
+                    <label className="block mb-3" style={{ color: 'black' }}>Job Title*</label>
+                    <input
+                      type="text"
+                      value={newJobTitle}
+                      onChange={(e) => setNewJobTitle(e.target.value)}
+                      required
+                      className="w-full px-6 py-3 rounded-lg text-lg"
+                      style={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid black'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2" style={{ color: 'black' }}>Experience Required*</label>
+                    <input
+                      type="text"
+                      value={newJobExperience}
+                      onChange={(e) => setNewJobExperience(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 rounded-lg"
+                      style={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid black'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2" style={{ color: 'black' }}>Skills Required* (comma-separated)</label>
+                    <input
+                      type="text"
+                      value={newJobSkills}
+                      onChange={(e) => setNewJobSkills(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 rounded-lg"
+                      style={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid black'
+                      }}
+                      placeholder="e.g. React, Node.js, TypeScript"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2" style={{ color: 'black' }}>Notice Period*</label>
+                    <input
+                      type="text"
+                      value={noticePeriod}
+                      onChange={(e) => setNoticePeriod(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 rounded-lg"
+                      style={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid black'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block mb-2" style={{ color: 'black' }}>Technical Knowledge* (comma-separated)</label>
+                    <input
+                      type="text"
+                      value={technicalKnowledge}
+                      onChange={(e) => setTechnicalKnowledge(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 rounded-lg"
+                      style={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid black'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2" style={{ color: 'black' }}>Attitude Requirements*</label>
+                    <input
+                      type="text"
+                      value={attitudeRequired}
+                      onChange={(e) => setAttitudeRequired(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 rounded-lg"
+                      style={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid black'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2" style={{ color: 'black' }}>Recruiter Email*</label>
                     <input
                       type="email"
-                      value={panelists[`round${index + 1}`].email}
-                      onChange={(e) => setPanelists(prev => ({
-                        ...prev,
-                        [`round${index + 1}`]: { ...prev[`round${index + 1}`], email: e.target.value }
-                      }))}
+                      value={newRecruiterEmail}
+                      onChange={(e) => setNewRecruiterEmail(e.target.value)}
                       required
                       className="w-full px-4 py-2 rounded-lg"
                       style={{
-                        backgroundColor: '#333',
-                        color: '#fff',
-                        border: '1px solid #ffd700'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2" style={{ color: '#ffd700' }}>Phone Number*</label>
-                    <input
-                      type="tel"
-                      value={panelists[`round${index + 1}`].phoneNumber}
-                      onChange={(e) => setPanelists(prev => ({
-                        ...prev,
-                        [`round${index + 1}`]: { ...prev[`round${index + 1}`], phoneNumber: e.target.value }
-                      }))}
-                      required
-                      className="w-full px-4 py-2 rounded-lg"
-                      style={{
-                        backgroundColor: '#333',
-                        color: '#fff',
-                        border: '1px solid #ffd700'
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: '1px solid black'
                       }}
                     />
                   </div>
                 </div>
               </div>
-            ))}
 
-            {error && (
-              <div className="p-4 bg-red-900/50 border border-red-500/50 text-red-200 rounded-lg">
-                {error}
+              {/* Full Width Fields */}
+              <div>
+                <label className="block mb-2" style={{ color: 'black' }}>Job Description*</label>
+                <textarea
+                  value={newJobDescription}
+                  onChange={(e) => setNewJobDescription(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 rounded-lg"
+                  style={{
+                    backgroundColor: 'white',
+                    color: 'black',
+                    border: '1px solid black'
+                  }}
+                  rows={4}
+                />
               </div>
-            )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-2 rounded-lg hover:bg-gray-800"
-              style={{
-                backgroundColor: '#333',
-                color: '#ffd700',
-                border: '1px solid #ffd700'
-              }}
-            >
-              {loading ? 'Creating...' : 'Create Job'}
-            </button>
-             <button
-              onClick={() => navigate("/recruiter-dashboard")}
-              className="px-4 py-2 rounded-lg hover:bg-gray-800"
-              style={{
-                backgroundColor: '#333',
-                color: '#ffd700',
-                border: '1px solid #ffd700'
-              }}
-            >
-                Publish Job to Naukri
-            </button>
+              {/* Number of Rounds */}
+              <div>
+                <label className="block mb-2" style={{ color: 'black' }}>Number of Interview Rounds*</label>
+                <select
+                  value={numberOfRounds}
+                  onChange={(e) => setNumberOfRounds(Number(e.target.value))}
+                  required
+                  className="w-full px-4 py-2 rounded-lg"
+                  style={{
+                    backgroundColor: 'white',
+                    color: 'black',
+                    border: '1px solid black'
+                  }}
+                >
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                </select>
+              </div>
 
+              {/* Panelist Section */}
+              {[...Array(numberOfRounds)].map((_, index) => (
+                <div key={index} className="p-6 rounded-lg mb-4" style={{
+                  backgroundColor: 'white',
+                  border: '1px solid black'
+                }}>
+                  <h3 className="text-xl font-medium mb-4" style={{ color: 'black' }}>
+                    Round {index + 1} Panelist*
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block mb-2" style={{ color: 'black' }}>Email*</label>
+                      <input
+                        type="email"
+                        value={panelists[`round${index + 1}`].email}
+                        onChange={(e) => setPanelists(prev => ({
+                          ...prev,
+                          [`round${index + 1}`]: { ...prev[`round${index + 1}`], email: e.target.value }
+                        }))}
+                        required
+                        className="w-full px-4 py-2 rounded-lg"
+                        style={{
+                          backgroundColor: 'white',
+                          color: 'black',
+                          border: '1px solid black'
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-2" style={{ color: 'black' }}>Phone Number*</label>
+                      <input
+                        type="tel"
+                        value={panelists[`round${index + 1}`].phoneNumber}
+                        onChange={(e) => setPanelists(prev => ({
+                          ...prev,
+                          [`round${index + 1}`]: { ...prev[`round${index + 1}`], phoneNumber: e.target.value }
+                        }))}
+                        required
+                        className="w-full px-4 py-2 rounded-lg"
+                        style={{
+                          backgroundColor: 'white',
+                          color: 'black',
+                          border: '1px solid black'
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {error && (
+                <div className="p-4 bg-red-900/50 border border-red-500/50 text-red-200 rounded-lg">
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-2 rounded-lg hover:bg-gray-800"
+                style={{
+                  backgroundColor: 'white',
+                  color: 'black',
+                  border: '1px solid black'
+                }}
+              >
+                {loading ? 'Creating...' : 'Create Job'}
+              </button>
+               
           
           </form>
+          </div>
+{/* Job Portal Distribution */}
+ 
+
+{/* Recently Posted Jobs Table */}
         </div>
       </div>
     </div>

@@ -17,6 +17,8 @@ import ForgotPassword from './pages/forgotpassword';
 import EditJob from './pages/editjob';
 import JobView from './pages/JobView';
 import ScheduleInterview from "./pages/ScheduleInterview";
+import JobCandidates from './pages/JobCandidates';
+
 
 
 
@@ -45,6 +47,8 @@ function App() {
           <Route path="/jobs/edit/:jobId" element={<EditJob />} />
           <Route path="/job-view/:jobId" element={<JobView />} />
           <Route path="/schedule-interview/:candidateId?" element={<ScheduleInterview />} />
+          <Route path="/job-candidates/:jobId" element={<JobCandidates />} />
+
         </Routes>
       </div>
     </div>

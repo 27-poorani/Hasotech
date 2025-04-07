@@ -108,90 +108,55 @@ const EditJob = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-black">
+    <div className="flex min-h-screen bg-white">
       <LeftNavigation />
       
-      {/* Main Content */}
-      <div className="flex-1 p-6 ml-64 pt-20">
-        <div className="max-w-4xl mx-auto p-8 rounded-lg" style={{ 
-          backgroundColor: '#242424',
-          border: '1px solid #ffd700',
-          boxShadow: '0 0 10px rgba(177, 150, 14, 0.2)'
-        }}>
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold" style={{ color: '#ffd700' }}>Edit Job</h1>
-            <button
-              onClick={() => navigate("/recruiter-dashboard")}
-              className="px-4 py-2 rounded-lg hover:bg-gray-800"
-              style={{
-                backgroundColor: '#333',
-                color: '#ffd700',
-                border: '1px solid #ffd700'
-              }}
-            >
-              Back to Dashboard
-            </button>
-          </div>
+      <div className="flex-1 p-6 ml-64">
+        <div className="flex justify-between items-start mb-6">
+          <h1 className="text-2xl font-semibold text-black">Edit Job</h1>
+        
+        </div>
 
-          {/* Split fields into two columns */}
+        <div className="bg-white rounded-lg shadow p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left Column */}
             <div className="space-y-4">
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Job Title</label>
+                <label className="block mb-2 text-gray-700 font-medium">Job Title</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.title}
                   onChange={(e) => setJobData({ ...jobData, title: e.target.value })}
                 />
               </div>
 
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Experience Required</label>
+                <label className="block mb-2 text-gray-700 font-medium">Experience Required</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.experience}
                   onChange={(e) => setJobData({ ...jobData, experience: e.target.value })}
                 />
               </div>
 
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Required Skills (comma separated)</label>
+                <label className="block mb-2 text-gray-700 font-medium">Required Skills</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.skillSet}
                   onChange={(e) => setJobData({ ...jobData, skillSet: e.target.value })}
+                  placeholder="Separate skills with commas"
                 />
               </div>
 
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Notice Period</label>
+                <label className="block mb-2 text-gray-700 font-medium">Notice Period</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.noticePeriod}
                   onChange={(e) => setJobData({ ...jobData, noticePeriod: e.target.value })}
                 />
@@ -201,59 +166,40 @@ const EditJob = () => {
             {/* Right Column */}
             <div className="space-y-4">
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Technical Knowledge (comma separated)</label>
+                <label className="block mb-2 text-gray-700 font-medium">Technical Knowledge</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.technicalKnowledge}
                   onChange={(e) => setJobData({ ...jobData, technicalKnowledge: e.target.value })}
+                  placeholder="Separate skills with commas"
                 />
               </div>
 
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Attitude Required</label>
+                <label className="block mb-2 text-gray-700 font-medium">Attitude Required</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.attitudeRequired}
                   onChange={(e) => setJobData({ ...jobData, attitudeRequired: e.target.value })}
                 />
               </div>
 
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Recruiter Email</label>
+                <label className="block mb-2 text-gray-700 font-medium">Recruiter Email</label>
                 <input
                   type="email"
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.recruiterEmail}
                   onChange={(e) => setJobData({ ...jobData, recruiterEmail: e.target.value })}
                 />
               </div>
 
               <div>
-                <label className="block mb-2" style={{ color: '#ffd700' }}>Number of Interview Rounds</label>
+                <label className="block mb-2 text-gray-700 font-medium">Number of Interview Rounds</label>
                 <select
-                  className="w-full px-4 py-2 rounded-lg"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    border: '1px solid #ffd700'
-                  }}
+                  className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                   value={jobData.numberOfRounds}
                   onChange={(e) => setJobData({ ...jobData, numberOfRounds: Number(e.target.value) })}
                 >
@@ -265,37 +211,27 @@ const EditJob = () => {
             </div>
           </div>
 
-          {/* Full width description field */}
+          {/* Description Field */}
           <div className="mt-6">
-            <label className="block mb-2" style={{ color: '#ffd700' }}>Description</label>
+            <label className="block mb-2 text-gray-700 font-medium">Description</label>
             <textarea
-              className="w-full px-4 py-2 rounded-lg"
-              style={{
-                backgroundColor: '#333',
-                color: '#fff',
-                border: '1px solid #ffd700'
-              }}
+              className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
               rows={4}
               value={jobData.description}
               onChange={(e) => setJobData({ ...jobData, description: e.target.value })}
             />
           </div>
 
-          {/* Panelist section remains full width */}
+          {/* Panelist Sections */}
           {[...Array(jobData.numberOfRounds)].map((_, index) => (
-            <div key={index} className="p-6 rounded-lg" style={{ backgroundColor: 'rgba(51, 51, 51, 0.5)' }}>
-              <h3 className="text-xl font-medium mb-4" style={{ color: '#ffd700' }}>Round {index + 1} Panelist</h3>
+            <div key={index} className="mt-6 p-6 bg-gray-50 rounded-lg">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Round {index + 1} Panelist</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Email</label>
+                  <label className="block mb-2 text-gray-700">Email</label>
                   <input
                     type="email"
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
+                    className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                     value={jobData.panelists[`round${index + 1}`]?.email || ''}
                     onChange={(e) => setJobData(prev => ({
                       ...prev,
@@ -310,15 +246,10 @@ const EditJob = () => {
                   />
                 </div>
                 <div>
-                  <label className="block mb-2" style={{ color: '#ffd700' }}>Phone Number</label>
+                  <label className="block mb-2 text-gray-700">Phone Number</label>
                   <input
                     type="tel"
-                    className="w-full px-4 py-2 rounded-lg"
-                    style={{
-                      backgroundColor: '#333',
-                      color: '#fff',
-                      border: '1px solid #ffd700'
-                    }}
+                    className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
                     value={jobData.panelists[`round${index + 1}`]?.phoneNumber || ''}
                     onChange={(e) => setJobData(prev => ({
                       ...prev,
@@ -336,28 +267,18 @@ const EditJob = () => {
             </div>
           ))}
 
-          {/* Buttons remain the same */}
+          {/* Action Buttons */}
           <div className="flex gap-4 mt-6">
             <button
               onClick={handleUpdate}
-              className="px-6 py-2 rounded-lg hover:bg-gray-800"
-              style={{
-                backgroundColor: '#333',
-                color: '#ffd700',
-                border: '1px solid #ffd700'
-              }}
+              className="px-6 py-2 rounded-lg bg-black text-white hover:bg-gray-800"
               disabled={loading}
             >
               {loading ? 'Saving...' : 'Save Changes'}
             </button>
             <button
-              onClick={() => navigate('/recruiter-dashboard')}
-              className="px-6 py-2 rounded-lg hover:bg-gray-800"
-              style={{
-                backgroundColor: '#333',
-                color: '#ffd700',
-                border: '1px solid #ffd700'
-              }}
+              onClick={() => navigate('/dashboard')}
+              className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
             >
               Cancel
             </button>
@@ -365,7 +286,6 @@ const EditJob = () => {
         </div>
       </div>
     </div>
-    
   );
 };
 

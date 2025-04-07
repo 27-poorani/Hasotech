@@ -134,265 +134,117 @@ const ViewJobs = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-black">
-      <LeftNavigation />
-      
+    <div className="flex min-h-screen bg-white" style={{ marginLeft: '0px' }}>
+      {/* Left Navigation */}
+      <div className="w-64 min-h-screen bg-white p-4 border-r border-gray-200 fixed left-0 top-0">
+      <div className="flex items-center gap-2 mb-4">
+        <img src="/aimnbbnm.jpg" alt="AIRecruiterX" className="w-25 h-8" />
+      </div>
+      <div className="text-gray-600 text-xs mb-6">RECRUITMENT</div>
+
+        <nav className="space-y-2">
+          <div className="p-3 rounded-lg bg-black">
+            <a href="/dashboard" className="flex items-center text-white">
+              <span className="mr-3">⬚</span>
+              Dashboard
+            </a>
+          </div>
+          <div className="p-3 rounded-lg hover:bg-[#242424] transition-colors">
+            <a href="/jobs" className="flex items-center text-gray-400">
+              <span className="mr-3">📋</span>
+              Jobs
+            </a>
+          </div>
+          <div className="p-3 rounded-lg hover:bg-[#242424] transition-colors">
+            <a href="/ai-screening" className="flex items-center text-gray-400">
+              <span className="mr-3">👥</span>
+              Candidates
+            </a>
+          </div>
+          <div className="p-3 rounded-lg hover:bg-[#242424] transition-colors">
+            <a href="/resumescreen" className="flex items-center text-gray-400">
+              <span className="mr-3">🔍</span>
+              Screening
+            </a>
+          </div>
+          <div className="p-3 rounded-lg hover:bg-[#242424] transition-colors">
+            <a href="/schedule-interview" className="flex items-center text-gray-400">
+              <span className="mr-3">💬</span>
+              Interviews
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+
       {/* Main Content */}
-      <div className="flex-1 p-6 ml-64 pt-20">
-        <div className="p-8 rounded-2xl w-full max-w-7xl mx-auto" style={{ 
-          backgroundColor: '#242424',
-          border: '1px solid #ffd700',
-          boxShadow: '0 0 10px rgba(177, 150, 14, 0.2)'
-        }}>
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold" style={{ color: '#ffd700' }}>Posted Jobs</h1>
-            <button
-              onClick={() => navigate("/recruiter-dashboard")}
-              className="px-4 py-2 rounded-lg hover:bg-gray-800"
-              style={{
-                backgroundColor: '#333',
-                color: '#ffd700',
-                border: '1px solid #ffd700'
-              }}
-            >
-              Back to Dashboard
-            </button>
-          </div>
+      <div className="flex-1 p-6 ml-64">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-semibold">Posted Jobs</h1>
+          <button 
+            onClick={() => navigate("/jobs")} 
+            className="px-4 py-2 rounded-lg bg-black text-white"
+          >
+            Create New Job
+          </button>
+        </div>
 
-          {/* Add the edit form here */}
-          {editJobId && (
-            <div className="mt-4 space-y-4 mb-6">
-              <input
-                type="text"
-                className="w-full px-4 py-2 rounded-lg"
-                style={{
-                  backgroundColor: '#333',
-                  color: '#fff',
-                  border: '1px solid #ffd700'
-                }}
-                placeholder="Job Title"
-                value={editJobTitle}
-                onChange={(e) => setEditJobTitle(e.target.value)}
-              />
-              <textarea
-                className="w-full px-4 py-2 rounded-lg"
-                style={{
-                  backgroundColor: '#333',
-                  color: '#fff',
-                  border: '1px solid #ffd700'
-                }}
-                placeholder="Job Description"
-                value={editJobOverview}
-                onChange={(e) => setEditJobOverview(e.target.value)}
-              />
-              <input
-                type="text"
-                className="w-full px-4 py-2 rounded-lg"
-                style={{
-                  backgroundColor: '#333',
-                  color: '#fff',
-                  border: '1px solid #ffd700'
-                }}
-                placeholder="Experience Required"
-                value={newJobExperience}
-                onChange={(e) => setNewJobExperience(e.target.value)}
-              />
-              <input
-                type="text"
-                className="w-full px-4 py-2 rounded-lg"
-                style={{
-                  backgroundColor: '#333',
-                  color: '#fff',
-                  border: '1px solid #ffd700'
-                }}
-                placeholder="Required Skills (comma separated)"
-                value={editJobSkills}
-                onChange={(e) => setEditJobSkills(e.target.value)}
-              />
-              <input
-                type="email"
-                className="w-full px-4 py-2 rounded-lg"
-                style={{
-                  backgroundColor: '#333',
-                  color: '#fff',
-                  border: '1px solid #ffd700'
-                }}
-                placeholder="Recruiter Email"
-                value={newRecruiterEmail}
-                onChange={(e) => setNewRecruiterEmail(e.target.value)}
-              />
-              <div className="flex gap-2">
-                <button
-                  onClick={handleUpdateJob}
-                  className="px-4 py-2 rounded-lg hover:bg-gray-800"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#ffd700',
-                    border: '1px solid #ffd700'
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? 'Saving...' : 'Save Changes'}
-                </button>
-                <button
-                  onClick={() => {
-                    setEditJobId(null);
-                    setEditJobTitle('');
-                    setEditJobSkills('');
-                    setEditJobOverview('');
-                    setNewJobExperience('');
-                    setNewRecruiterEmail('');
-                  }}
-                  className="px-4 py-2 rounded-lg hover:bg-gray-800"
-                  style={{
-                    backgroundColor: '#333',
-                    color: '#ffd700',
-                    border: '1px solid #ffd700'
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse" style={{ borderColor: '#ffd700' }}>
-              <thead>
-                <tr style={{ backgroundColor: '#333' }}>
-                  <th className="p-3 text-left" style={{ color: '#ffd700', borderColor: '#ffd700' }}>Job Title</th>
-                  <th className="p-3 text-left" style={{ color: '#ffd700', borderColor: '#ffd700' }}>Description</th>
-                  <th className="p-3 text-left" style={{ color: '#ffd700', borderColor: '#ffd700' }}>Experience</th>
-                  <th className="p-3 text-left" style={{ color: '#ffd700', borderColor: '#ffd700' }}>Skills</th>
-                  <th className="p-3 text-left" style={{ color: '#ffd700', borderColor: '#ffd700' }}>Recruiter</th>
-                  <th className="p-3 text-left" style={{ color: '#ffd700', borderColor: '#ffd700' }}>Actions</th>
+        <div className="overflow-x-auto bg-white rounded-lg shadow">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Job Title</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Description</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Experience</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Skills</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Recruiter</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {jobs.map((job) => (
+                <tr key={job._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 text-sm text-gray-900">{job.title}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {job.description.length > 100 ? `${job.description.substring(0, 100)}...` : job.description}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900">{job.experience}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    <div className="flex flex-wrap gap-1">
+                      {job.skillSet.map((skill, index) => (
+                        <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900">{job.recruiterEmail}</td>
+                  <td className="px-6 py-4 text-sm">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleView(job._id)}
+                        className="px-3 py-1 text-sm rounded-lg bg-black text-white hover:bg-gray-800"
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={() => navigate(`/jobs/edit/${job._id}`)}
+                        className="px-3 py-1 text-sm rounded-lg bg-black text-white hover:bg-gray-800"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(job._id)}
+                        className="px-3 py-1 text-sm rounded-lg border border-red-500 text-red-500 hover:bg-red-50"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {jobs.map((job) => (
-                  <tr key={job._id} className="hover:bg-gray-800" style={{ borderColor: '#ffd700' }}>
-                    <td className="p-3" style={{ color: '#fff', borderColor: '#ffd700' }}>
-                      {editJobId === job._id ? (
-                        <input
-                          type="text"
-                          className="w-full px-2 py-1 rounded"
-                          style={{ backgroundColor: '#333', color: '#fff', border: '1px solid #ffd700' }}
-                          value={editJobTitle}
-                          onChange={(e) => setEditJobTitle(e.target.value)}
-                        />
-                      ) : job.title}
-                    </td>
-                    <td className="p-3" style={{ color: '#fff', borderColor: '#ffd700' }}>
-                      {editJobId === job._id ? (
-                        <textarea
-                          className="w-full px-2 py-1 rounded"
-                          style={{ backgroundColor: '#333', color: '#fff', border: '1px solid #ffd700' }}
-                          value={editJobOverview}
-                          onChange={(e) => setEditJobOverview(e.target.value)}
-                        />
-                      ) : (job.description.length > 100 ? `${job.description.substring(0, 100)}...` : job.description)}
-                    </td>
-                    <td className="p-3" style={{ color: '#fff', borderColor: '#ffd700' }}>
-                      {editJobId === job._id ? (
-                        <input
-                          type="text"
-                          className="w-full px-2 py-1 rounded"
-                          style={{ backgroundColor: '#333', color: '#fff', border: '1px solid #ffd700' }}
-                          value={newJobExperience}
-                          onChange={(e) => setNewJobExperience(e.target.value)}
-                        />
-                      ) : job.experience}
-                    </td>
-                    <td className="p-3" style={{ color: '#fff', borderColor: '#ffd700' }}>
-                      {editJobId === job._id ? (
-                        <input
-                          type="text"
-                          className="w-full px-2 py-1 rounded"
-                          style={{ backgroundColor: '#333', color: '#fff', border: '1px solid #ffd700' }}
-                          value={editJobSkills}
-                          onChange={(e) => setEditJobSkills(e.target.value)}
-                        />
-                      ) : job.skillSet.join(", ")}
-                    </td>
-                    <td className="p-3" style={{ color: '#fff', borderColor: '#ffd700' }}>
-                      {editJobId === job._id ? (
-                        <input
-                          type="email"
-                          className="w-full px-2 py-1 rounded"
-                          style={{ backgroundColor: '#333', color: '#fff', border: '1px solid #ffd700' }}
-                          value={newRecruiterEmail}
-                          onChange={(e) => setNewRecruiterEmail(e.target.value)}
-                        />
-                      ) : job.recruiterEmail}
-                    </td>
-                    <td className="p-3" style={{ borderColor: '#ffd700' }}>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleView(job._id)}
-                          className="px-3 py-1 rounded hover:bg-gray-800"
-                          style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                        >
-                          View
-                        </button>
-                        {editJobId === job._id ? (
-                          <>
-                            <button
-                              onClick={handleUpdateJob}
-                              className="px-3 py-1 rounded hover:bg-gray-800"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                              disabled={loading}
-                            >
-                              {loading ? 'Saving...' : 'Save'}
-                            </button>
-                            <button
-                              onClick={() => {
-                                setEditJobId(null);
-                                setEditJobTitle('');
-                                setEditJobSkills('');
-                                setEditJobOverview('');
-                                setNewJobExperience('');
-                                setNewRecruiterEmail('');
-                              }}
-                              className="px-3 py-1 rounded hover:bg-gray-800"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                            >
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              onClick={() => editJob(job)}
-                              className="px-3 py-1 rounded hover:bg-gray-800"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => handleDelete(job._id)}
-                              className="px-3 py-1 rounded hover:bg-gray-800"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                            >
-                              Delete
-                            </button>
-                            <button
-                              // onClick={() => handleDelete(job._id)}
-                              className="px-3 py-1 rounded hover:bg-gray-800"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                            >
-                              Publish Job to Naukri
-                            </button>
-                            
-                          </>
-                          
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

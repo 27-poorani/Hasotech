@@ -327,24 +327,23 @@ const RecruiterDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-black">
-    
-      {/* Left Navigation */}
-      <div className="w-64 min-h-screen bg-black p-4 border-r border-gray-800 fixed left-0 top-0">
-        <div className="flex items-center gap-2 mb-4">
-          <img src="/ai.jpg" alt="ATS" className="w-25 h-8" />
-        </div>
-        <div className="text-gray-500 text-xs mb-6">RECRUITMENT</div>
+    <div className="flex min-h-screen bg-white"style={{ marginLeft: '-200px' }}>
+    {/* Left Navigation */}
+    <div className="w-64 min-h-screen bg-white p-4 border-r border-gray-200 fixed left-0 top-0">
+      <div className="flex items-center gap-2 mb-4">
+        <img src="/aimnbbnm.jpg" alt="AIRecruiterX" className="w-25 h-8" />
+      </div>
+      <div className="text-gray-600 text-xs mb-6">RECRUITMENT</div>
 
         <nav className="space-y-2">
-          <div className="p-3 rounded-lg bg-gradient-to-r from-purple-600 to-orange-500">
+          <div className="p-3 rounded-lg bg-black">
             <a href="/dashboard" className="flex items-center text-white">
               <span className="mr-3">⬚</span>
               Dashboard
             </a>
           </div>
           <div className="p-3 rounded-lg hover:bg-[#242424] transition-colors">
-            <a href="/jobs" className="flex items-center text-gray-400">
+            <a href="/viewjobs" className="flex items-center text-gray-400">
               <span className="mr-3">📋</span>
               Jobs
             </a>
@@ -371,345 +370,222 @@ const RecruiterDashboard = () => {
         </nav>
       </div>
 
+       
+
       {/* Main Content Wrapper */}
       <div className="flex-1 p-6 ml-64 min-h-screen overflow-y-auto">
+        {/* Header with Notifications */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-orange-500">
-            Hello Recruiter! welcome back...!!
-          </h1>
+          <div className="flex items-center gap-6">
+            <button className="text-black hover:text-gray-600">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
+            <button className="text-black hover:text-gray-600 relative">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+            </button>
+            <button className="text-black hover:text-gray-600 relative">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </button>
+          </div>
           <div className="rounded-lg hover:bg-[#242424] transition-colors px-4 py-2">
-            <a href="/profile" className="flex items-center text-white hover:text-white">
+            <a href="/profile" className="flex items-center text-black hover:text-black">
               <span className="mr-2">👤</span>
               Profile
             </a>
           </div>
         </div>
 
-        {/* Rest of your existing dashboard content */}
-        {/* You need to Hire Section */}
-        <div className="mt-4 p-4 rounded-lg bg-black">
-          <h2 className="text-lg font-semibold mb-6" style={{ color: '#ffd700' }}>You Need to Hire</h2>
-          <div className="grid grid-cols-2 gap-6">
-            <div className="flex gap-4">
-              {/* Content Designer */}
-              <div className="w-full p-4 rounded-lg" style={{ background: 'linear-gradient(145deg, #242424 0%, #1a1a1a 100%)' }}>
-                <div className="flex items-center justify-between">
-                  <span className="text-4xl font-bold text-white">3</span>
-                  <div className="relative w-12 h-12">
-                    <svg className="w-12 h-12 transform -rotate-90">
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#330000"
-                        strokeWidth="4"
-                      />
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#ff0000"
-                        strokeWidth="4"
-                        strokeDasharray={`${75 * 1.26} 126`}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-xs text-red-500">75%</span>
-                  </div>
-                </div>
-                <p className="mt-2 text-sm font-medium" style={{ color: '#ffd700' }}>Content Designers</p>
-              </div>
-
-              {/* Node js developer */}
-              <div className="w-full p-4 rounded-lg" style={{ background: 'linear-gradient(145deg, #242424 0%, #1a1a1a 100%)' }}>
-                <div className="flex items-center justify-between">
-                  <span className="text-4xl font-bold text-white">9</span>
-                  <div className="relative w-12 h-12">
-                    <svg className="w-12 h-12 transform -rotate-90">
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#330000"
-                        strokeWidth="4"
-                      />
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#ff0000"
-                        strokeWidth="4"
-                        strokeDasharray={`${5 * 1.26} 126`}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-xs text-red-500">5%</span>
-                  </div>
-                </div>
-                <p className="mt-2 text-sm font-medium" style={{ color: '#ffd700' }}>Node js developer</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              {/* Senior UI Designer */}
-              <div className="w-full p-4 rounded-lg" style={{ background: 'linear-gradient(145deg, #242424 0%, #1a1a1a 100%)' }}>
-                <div className="flex items-center justify-between">
-                  <span className="text-4xl font-bold text-white">2</span>
-                  <div className="relative w-12 h-12">
-                    <svg className="w-12 h-12 transform -rotate-90">
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#330000"
-                        strokeWidth="4"
-                      />
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#ff0000"
-                        strokeWidth="4"
-                        strokeDasharray={`${50 * 1.26} 126`}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-xs text-red-500">50%</span>
-                  </div>
-                </div>
-                <p className="mt-2 text-sm font-medium" style={{ color: '#ffd700' }}>Senior UI Designer</p>
-              </div>
-
-              {/* Marketing managers */}
-              <div className="w-full p-4 rounded-lg" style={{ background: 'linear-gradient(145deg, #242424 0%, #1a1a1a 100%)' }}>
-                <div className="flex items-center justify-between">
-                  <span className="text-4xl font-bold text-white">4</span>
-                  <div className="relative w-12 h-12">
-                    <svg className="w-12 h-12 transform -rotate-90">
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#330000"
-                        strokeWidth="4"
-                      />
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#ff0000"
-                        strokeWidth="4"
-                        strokeDasharray={`${45 * 1.26} 126`}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-xs text-red-500">45%</span>
-                  </div>
-                </div>
-                <p className="mt-2 text-sm font-medium" style={{ color: '#ffd700' }}>Marketing managers</p>
-              </div>
-            </div>
-          </div>
+        {/* Welcome Message Card */}
+        <div className="bg-black text-white p-6 rounded-lg mb-6">
+          <h2 className="text-2xl font-semibold mb-2">Hello Recruiter!</h2>
+          <p className="mb-4">You have 16 new applications. It's a lot of work for today! So let's start.</p>
+          <button className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-100">
+            Review it!
+          </button>
         </div>
-<br></br>
-      {/* Main Grid */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
-        {/* Left Section - Action Cards */}
-        <div className="col-span-2 grid grid-cols-2 gap-6">
-          {/* Create Job Card - Made larger */}
-          <div className="p-8 rounded-lg col-span-2" style={{ 
-            background: 'linear-gradient(145deg, #1a1a1a 0%, #242424 100%)',
-            border: '1px solid rgba(255, 215, 0, 0.1)',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-          }}>
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h3 className="text-2xl mb-4" style={{ color: '#ffd700' }}>Create a job post</h3>
-                <div className="flex gap-4">
-                  <button onClick={() => navigate("/jobs")} className="px-6 py-3 rounded-lg text-lg" style={{ backgroundColor: '#ff6b00', color: 'white' }}>
-                    Post Job
-                  </button>
-                  <button onClick={() => navigate("/viewjobs")} className="px-6 py-3 rounded-lg text-lg" style={{ backgroundColor: '#ff6b00', color: 'white' }}>
-                    View Jobs
-                  </button>
-                </div>
-              </div>
-            </div>
+     
+        {/* Main Grid */}
+        <div className="grid grid-cols-2 gap-6 mb-8">
+          {/* Left Section - Action Cards */}
+          <div className="col-span-2 grid grid-cols-2 gap-6">
+            {/* Create Job Card - Made larger */}
+            <div className="p-8 rounded-lg col-span-2" style={{ 
+              background: 'white',
+              border: '1px solid rgba(255, 215, 0, 0.1)',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}>
+       
 
             {/* Recently Posted Jobs Table */}
-            <div className="mt-8">
-              <h4 className="text-xl mb-4" style={{ color: '#ffd700' }}>Recently Posted Jobs</h4>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr>
-                      <th className="text-left p-2" style={{ color: '#ffd700', borderBottom: '1px solid #ffd700' }}>Title</th>
-                      <th className="text-left p-2" style={{ color: '#ffd700', borderBottom: '1px solid #ffd700' }}>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {availableJobs.slice(0, 3).map((job) => (
-                      <tr key={job._id} className="hover:bg-gray-800">
-                        <td className="p-2" style={{ color: '#fff', borderBottom: '1px solid rgba(255, 215, 0, 0.1)' }}>{job.title}</td>
-                        <td className="p-2" style={{ color: '#fff', borderBottom: '1px solid rgba(255, 215, 0, 0.1)' }}>
-                          <div className="flex gap-5">
-                            <button
-                              onClick={() => {
-                                const jobDetails = availableJobs.find(j => j._id === job._id);
-                                if (jobDetails) {
-                                  navigate(`/job-view/${job._id}`, { state: { jobDetails } });
-                                }
-                              }}
-                              className="px-3 py-1 rounded-lg hover:bg-gray-700"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                            >
-                              View
-                            </button>
-                            <button
-                              onClick={() => navigate(`/jobs/edit/${job._id}`)}
-                              className="px-3 py-1 rounded-lg hover:bg-gray-700"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => handleDelete(job._id)}
-                              className="px-3 py-1 rounded-lg hover:bg-gray-700"
-                              style={{ backgroundColor: '#333', color: '#ff4444', border: '1px solid #ff4444' }}
-                            >
-                              Delete
-                            </button>
-                            <button
-                              // onClick={() => navigate(`/jobs/edit/${job._id}`)}
-                              className="px-3 py-1 rounded-lg hover:bg-gray-700"
-                              style={{ backgroundColor: '#333', color: '#ffd700', border: '1px solid #ffd700' }}
-                            >
-                              Publish Job to Naukri
-                            </button>
-                             
-                            
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div className="mt-0">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-xl" style={{ color: 'black' }}>Recently Posted Jobs</h4>
+                <button onClick={() => navigate("/viewjobs")} className="px-4 py-2 rounded-lg text-lg" style={{ backgroundColor: 'black ', color: 'white' }}>
+                  View All
+                </button>
               </div>
+              {availableJobs.length > 0 ? (
+                <div className="grid grid-cols-3 gap-4">
+                  {availableJobs.slice(0, 3).map((job) => (
+                    <div key={job._id} className="p-4 border border-gray-200 rounded-lg bg-white hover:shadow-lg transition-all">
+                      <div className="flex flex-col">
+                        <h5 className="font-medium text-black text-lg mb-2">{job.title}</h5>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center text-gray-600">
+                            <img src="/exp.png" alt="Experience" className="w-5 h-5 mr-2" />
+                            <span className="text-sm">{job.experience}</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {job.skillSet.slice(0, 3).map((skill, index) => (
+                              <span 
+                                key={index}
+                                className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
+                              >
+                                {skill}
+                              </span>
+                            ))}
+                            {job.skillSet.length > 3 && (
+                              <span className="text-xs text-gray-500">
+                                +{job.skillSet.length - 3} more
+                              </span>
+                            )}
+                          </div>
+                          <div className="mt-2 text-sm text-gray-500">
+                            Recruiter Mail: {job.recruiterEmail}
+                          </div>
+                          
+                          {/* Added Candidates Section */}
+                          <div className="mt-4 border-t pt-3">
+                            <h6 className="text-sm font-medium text-black mb-2">Top Matches</h6>
+                            <div className="space-y-2">
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm">John Doe</span>
+                                <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                                  95% Match
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm">Jane Smith</span>
+                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                  88% Match
+                                </span>
+                              </div>
+                              <button 
+                                onClick={() => navigate(`/job-candidates/${job._id}`)}
+                                className="w-full mt-2 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                              >
+                                View More
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-16 bg-gradient-to-r from-gray-50 to-white rounded-xl border-2 border-dashed border-gray-200">
+                  <img src="/job-post.png" alt="Post Job" className="w-39 h-32 mb-6 animate-bounce" />
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3">No Jobs Posted Yet</h3>
+                  <p className="text-gray-500 mb-6">Start by creating your first job posting</p>
+                  <button 
+                    onClick={() => navigate('/jobs')}
+                    className="group relative px-8 py-4 bg-black text-white rounded-lg text-lg font-medium
+                      transform hover:scale-105 transition-all duration-300
+                      shadow-lg hover:shadow-xl overflow-hidden"
+                  >
+                    <span className="relative z-10">✨ Create Your First Job</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </button>
+                </div>
+              )}
             </div>
+
           </div>
 
-          {/* Resume Screening Card */}
-          <div className="p-6 rounded-lg" style={{ 
-            background: 'linear-gradient(145deg, #1a1a1a 0%, #242424 100%)',
-            border: '1px solid rgba(255, 215, 0, 0.1)',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h3 className="text-xl mb-4" style={{ color: '#ffd700' }}>Resume Screening</h3>
-            <button onClick={() => navigate("/resumescreen")} className="px-4 py-2 rounded-lg" style={{ backgroundColor: '#ff6b00', color: 'white' }}>
-              Start Screening
-            </button>
-          </div>
-
-          {/* Candidate Shortlisting Card */}
-          <div className="p-6 rounded-lg" style={{ 
-            background: 'linear-gradient(145deg, #1a1a1a 0%, #242424 100%)',
-            border: '1px solid rgba(255, 215, 0, 0.1)',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h3 className="text-xl mb-4" style={{ color: '#ffd700' }}>Candidate Shortlisting</h3>
-            <button onClick={() => navigate("/ai-screening")} className="px-4 py-2 rounded-lg" style={{ backgroundColor: '#ff6b00', color: 'white' }}>
-              View Shortlisted Candidates
-            </button>
-          </div>
-
+          {/* Remove the Matched Candidates section and continue with Schedule Interviews Card */}
           {/* Schedule Interviews Card */}
           <div className="p-8 rounded-lg col-span-2" style={{ 
-            background: 'linear-gradient(145deg, #1a1a1a 0%, #242424 100%)',
+            background: 'white',
             border: '1px solid rgba(255, 215, 0, 0.1)',
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
           }}>
            
 
             {/* Recent Interviews Table */}
-            <div className="mt-8">
-              <h4 className="text-xl mb-4" style={{ color: '#ffd700' }}>Recent Interviews</h4>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr>
-                      <th className="text-left p-2" style={{ color: '#ffd700', borderBottom: '1px solid #ffd700' }}>Job Title</th>
-                      <th className="text-left p-2" style={{ color: '#ffd700', borderBottom: '1px solid #ffd700' }}>Candidate</th>
-                      <th className="text-left p-2" style={{ color: '#ffd700', borderBottom: '1px solid #ffd700' }}>Date & Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {scheduledInterviews.length > 0 ? (
-                      scheduledInterviews.slice(0, 3).map((interview) => (
-                        <tr key={interview.id} className="hover:bg-gray-800">
-                          <td className="p-2" style={{ color: '#fff', borderBottom: '1px solid rgba(255, 215, 0, 0.1)' }}>
-                            {interview.position}
-                          </td>
-                          <td className="p-2" style={{ color: '#fff', borderBottom: '1px solid rgba(255, 215, 0, 0.1)' }}>
-                            {interview.candidateName}
-                          </td>
-                          <td className="p-2" style={{ color: '#fff', borderBottom: '1px solid rgba(255, 215, 0, 0.1)' }}>
-                            {`${interview.date} ${interview.time}`}
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={3} className="p-2 text-center" style={{ color: '#fff' }}>
-                          No interviews scheduled
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+            <div className="mt-0">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-xl" style={{ color: 'black' }}>Scheduled Meetings</h4>
+                <button className="px-4 py-2 rounded-lg bg-black text-white">
+                  View Calendar
+                </button>
+              </div>
+
+              {/* Interview Cards Container */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {/* Technical Interview */}
+                <div className="p-4 border border-gray-200 rounded-lg bg-white">
+                  <h5 className="font-medium text-black">Technical Interview - John Smith</h5>
+                  <p className="text-gray-500 text-sm mt-1">Today at 2:00 PM</p>
+                  <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mt-2">
+                    Upcoming
+                  </span>
+                </div>
+
+                {/* HR Interview */}
+                <div className="p-4 border border-gray-200 rounded-lg bg-white">
+                  <h5 className="font-medium text-black">HR Interview - Mike Tyler</h5>
+                  <p className="text-gray-500 text-sm mt-1">Tomorrow at 11:00 AM</p>
+                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mt-2">
+                    Scheduled
+                  </span>
+                </div>
+
+                {/* Design Task Review */}
+                <div className="p-4 border border-gray-200 rounded-lg bg-white">
+                  <h5 className="font-medium text-black">Design Task Review - Ella Clinton</h5>
+                  <p className="text-gray-500 text-sm mt-1">Jan 23, 2025 at 3:30 PM</p>
+                  <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm mt-2">
+                    Confirmed
+                  </span>
+                </div>
+              </div>
+
+              {/* AI Interview Section */}
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h5 className="font-medium text-black">AI Interview Scheduling</h5>
+                    <p className="text-gray-500 text-sm">Automated video/audio interviews will be conducted and recorded</p>
+                  </div>
+                  <button className="px-4 py-2 rounded-lg bg-black text-white text-sm">
+                    Configure AI Interview
+                  </button>
+                </div>
+              </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Right Section - Calendar remains the same */}
-        <div className="p-6 rounded-lg" style={{ 
-          background: 'linear-gradient(145deg, #1a1a1a 0%, #242424 100%)',
-          border: '1px solid rgba(255, 215, 0, 0.1)',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-        }}>
-          <h3 className="text-xl mb-4" style={{ color: '#ffd700' }}>March 2025</h3>
-          <div className="grid grid-cols-7 gap-1 text-center mb-2">
-            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-              <div key={day} className="text-gray-400 text-sm">{day}</div>
-            ))}
-          </div>
-          <div className="grid grid-cols-7 gap-1 text-center">
-            {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
-              <div
-                key={day}
-                className="p-2 rounded hover:bg-gray-700 cursor-pointer"
-                style={{ color: '#fff' }}
-              >
-                {day}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-
-  
+          
+                   
+</div>
+</div>
+</div>
+</div>  
                 
                  
 
                 
               
-            </div>
-          </div>
       
 
   );

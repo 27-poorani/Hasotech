@@ -2,9 +2,9 @@ import React from 'react';
 
 const LeftNavigation = () => {
   return (
-    <div className="w-64 min-h-screen bg-black p-4 border-r border-gray-800 fixed left-0 top-20">
+    <div className="w-64 min-h-screen bg-white p-4 border-r border-gray-800 fixed left-0 top-18">
       <div className="flex items-center gap-2 mb-4">
-        <img src="/ai.jpg" alt="ATS" className="w-25 h-8 " />
+        <img src="/atslo.png" alt="AIRecruiterX" className="w-25 h-8 " />
       </div>
       <div className="text-gray-500 text-xs mb-6">RECRUITMENT</div>
 
@@ -16,7 +16,7 @@ const LeftNavigation = () => {
           </a>
         </div>
         <div className="p-3 rounded-lg hover:bg-[#242424] transition-colors">
-          <a href="/jobs" className="flex items-center text-gray-400">
+          <a href="/viewjobs" className="flex items-center text-gray-400">
             <span className="mr-3">📋</span>
             Jobs
           </a>
