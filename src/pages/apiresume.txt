@@ -1,0 +1,300 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(API_KEY);
+
+interface Job {
+  _id: string;
+  title: string;
+  description: string;
+}
+
+interface ResumeMatch {
+  phoneNumber: string;
+  ranking: string;
+  jdMatchPercentage: string;
+}
+
+const ResumeScreen = () => {
+  const navigate = useNavigate();
+  const [selectedJob, setSelectedJob] = useState("");
+  const [isScreening, setIsScreening] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [resumeMatches, setResumeMatches] = useState<ResumeMatch[]>([]);
+  const [availableJobs, setAvailableJobs] = useState<Job[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const token = user?.token;
+
+  // Redirect if user is not logged in
+  useEffect(() => {
+    if (!token) {
+      alert("Please log in to screen resumes.");
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  // Fetch available jobs
+  useEffect(() => {
+    const fetchJobs = async () => {
+      if (!token) return;
+      try {
+        const response = await axios.get("http://localhost:8000/jobs", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.data.success) {
+          setAvailableJobs(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      }
+    };
+
+    fetchJobs();
+  }, [token]);
+
+  const handleResumeUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedJob) {
+      alert("Please select a job posting first.");
+      return;
+    }
+
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsScreening(true);
+    setShowResults(false);
+    setError(null);
+
+    try {
+      const jobDescription =
+        availableJobs.find((job) => job._id === selectedJob)?.description ||
+        "No job description available.";
+
+      const prompt = `
+        You are an expert resume analyzer. Your task is to analyze the provided resume against the job description and provide a detailed assessment.
+
+        Job Description:
+        ${jobDescription}
+
+        Instructions for Resume Analysis:
+        1. Read the resume text carefully
+        2. Look for contact information, especially phone numbers
+        3. Analyze the resume content against the job requirements
+        4. Provide a detailed assessment of the match
+
+        IMPORTANT: You must respond with ONLY a valid JSON object in this exact format:
+        {
+          "phoneNumber": "extracted phone number or N/A",
+          "ranking": "Strong Match/Good Match/Average Match/Poor Match",
+          "jdMatchPercentage": "XX%",
+          "analysis": "Brief explanation of the assessment"
+        }
+
+        Do not include any text before or after the JSON object. The response must be a valid JSON object that can be parsed.
+      `;
+
+      // Process each file
+      const results: ResumeMatch[] = [];
+      
+      for (const file of Array.from(files)) {
+        try {
+          // Read file as text
+          const text = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = () => resolve(reader.result?.toString() || "");
+          });
+
+          console.log("File content:", text); // Log the file content
+
+          // Create a more specific prompt for this file
+          const filePrompt = `${prompt}\n\nResume Content:\n${text}`;
+
+          const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+          const result = await model.generateContent(filePrompt);
+          const responseText = await result.response.text();
+          
+          console.log("API Response:", responseText); // Log the raw API response
+          
+          try {
+            // Clean the response text to ensure it's valid JSON
+            const cleanedResponse = responseText.trim();
+            console.log("Cleaned response:", cleanedResponse); // Log the cleaned response
+            
+            // Try to parse the response as JSON
+            const parsedResponse = JSON.parse(cleanedResponse);
+            console.log("Parsed response:", parsedResponse); // Log the parsed response
+            
+            // Ensure the response has the required fields
+            const match: ResumeMatch = {
+              phoneNumber: parsedResponse.phoneNumber || "N/A",
+              ranking: parsedResponse.ranking || "Unable to Analyze",
+              jdMatchPercentage: parsedResponse.jdMatchPercentage || "0%"
+            };
+            
+            results.push(match);
+          } catch (parseError) {
+            console.error("Error parsing response:", parseError);
+            console.error("Raw response:", responseText);
+            
+            // Try to extract JSON-like content if the response isn't valid JSON
+            const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              try {
+                const extractedJson = JSON.parse(jsonMatch[0]);
+                results.push({
+                  phoneNumber: extractedJson.phoneNumber || "N/A",
+                  ranking: extractedJson.ranking || "Unable to Analyze",
+                  jdMatchPercentage: extractedJson.jdMatchPercentage || "0%"
+                });
+              } catch (extractError) {
+                console.error("Error extracting JSON:", extractError);
+                results.push({
+                  phoneNumber: "N/A",
+                  ranking: "Error Processing",
+                  jdMatchPercentage: "0%"
+                });
+              }
+            } else {
+              results.push({
+                phoneNumber: "N/A",
+                ranking: "Error Processing",
+                jdMatchPercentage: "0%"
+              });
+            }
+          }
+        } catch (fileError) {
+          console.error(`Error processing file ${file.name}:`, fileError);
+          results.push({
+            phoneNumber: "N/A",
+            ranking: "Error Processing",
+            jdMatchPercentage: "0%"
+          });
+        }
+      }
+
+      if (results.length > 0) {
+        setResumeMatches(results);
+        setShowResults(true);
+      } else {
+        setError("No results were generated. Please try again.");
+      }
+    } catch (error: any) {
+      console.error("Resume screening failed:", error);
+      setError("Error screening resumes. Please try again.");
+    } finally {
+      setIsScreening(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6 bg-black">
+      <div className="max-w-3xl w-full bg-gray-900 p-8 rounded-lg shadow-lg border border-yellow-500">
+        <h1 className="text-3xl font-bold text-yellow-500 mb-6 text-center">
+          Resume Screening
+        </h1>
+
+        <button
+          onClick={() => navigate("/recruiter-dashboard")}
+          className="w-full mb-6 py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-600 transition"
+        >
+          Back to Dashboard
+        </button>
+
+        <div className="space-y-6">
+          {/* Job Selection Dropdown */}
+          <div>
+            <label className="block mb-2 text-yellow-500">Select Job Posting</label>
+            <select
+              className="w-full p-3 rounded-lg bg-gray-800 text-white border border-yellow-500"
+              value={selectedJob}
+              onChange={(e) => setSelectedJob(e.target.value)}
+              required
+            >
+              <option value="">Select a job posting</option>
+              {availableJobs.length > 0 ? (
+                availableJobs.map((job) => (
+                  <option key={job._id} value={job._id}>
+                    {job.title}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No jobs available</option>
+              )}
+            </select>
+          </div>
+
+          {/* Resume Upload Section */}
+          <div>
+            <label className="block mb-2 text-yellow-500">Upload Resumes</label>
+            <div className="p-6 text-center rounded-lg border-2 border-dashed border-yellow-500 bg-gray-800 hover:bg-gray-700 cursor-pointer">
+              <input
+                type="file"
+                multiple
+                accept=".txt"
+                onChange={handleResumeUpload}
+                className="hidden"
+                id="resume-upload"
+                disabled={!selectedJob}
+              />
+              <label
+                htmlFor="resume-upload"
+                className="block text-yellow-500 cursor-pointer"
+              >
+                Click to upload or drag and drop
+                <span className="block text-gray-400">
+                  Please upload text files (.txt) only
+                </span>
+              </label>
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mt-4 p-4 bg-red-900 text-red-100 rounded-lg">
+              {error}
+            </div>
+          )}
+
+          {/* Screening Animation */}
+          {isScreening && (
+            <div className="flex flex-col items-center py-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-4 border-yellow-500 border-t-transparent"></div>
+              <p className="mt-2 text-yellow-500">Screening resumes...</p>
+            </div>
+          )}
+
+          {/* Matching Results */}
+          {showResults && resumeMatches.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold text-yellow-500 mb-3">
+                Matching Results:
+              </h3>
+              {resumeMatches.map((match, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg p-4 mb-3 bg-gray-800 border border-yellow-500"
+                >
+                  <h4 className="text-yellow-500 font-semibold">
+                    Resume {index + 1}
+                  </h4> 
+                  <p className="text-white">Phone Number: {match.phoneNumber}</p>
+                  <p className="text-white">Ranking: {match.ranking}</p>
+                  <p className="text-white">JD Match Percentage: {match.jdMatchPercentage}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ResumeScreen;

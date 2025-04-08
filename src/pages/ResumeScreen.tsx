@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import LeftNavigation from '../components/LeftNavigation';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(API_KEY);
 
 interface ResumeMatch {
-  jobTitle: string;
-  matchPercentage: number;
-  matchedSkills: string[];
-  missingSkills: string[];
+  phoneNumber: string;
+  ranking: string;
+  jdMatchPercentage: string;
 }
 
 const ResumeScreen = () => {
@@ -24,6 +27,7 @@ const ResumeScreen = () => {
   const [isScreening, setIsScreening] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [resumeMatches, setResumeMatches] = useState<ResumeMatch[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   // Get user data
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -64,7 +68,7 @@ const ResumeScreen = () => {
 
   const handleResumeUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedJob) {
-      alert("Please select a job posting first");
+      alert("Please select a job posting first.");
       return;
     }
 
@@ -73,39 +77,100 @@ const ResumeScreen = () => {
 
     setIsScreening(true);
     setShowResults(false);
+    setError(null);
 
     try {
-      // Process multiple files
-      for (let i = 0; i < files.length; i++) {
-        await simulateResumeScreening(files[i]);
+      const jobDescription =
+        availableJobs.find((job) => job._id === selectedJob)?.description ||
+        "No job description available.";
+
+      const prompt = `
+        You are an expert resume analyzer. Your task is to analyze the provided resume against the job description and provide a detailed assessment.
+
+        Job Description:
+        ${jobDescription}
+
+        Instructions for Resume Analysis:
+        1. Read the resume text carefully
+        2. Look for contact information, especially phone numbers
+        3. Analyze the resume content against the job requirements
+        4. Provide a detailed assessment of the match
+
+        IMPORTANT: You must respond with ONLY a valid JSON object in this exact format:
+        {
+          "phoneNumber": "extracted phone number or N/A",
+          "ranking": "Strong Match/Good Match/Average Match/Poor Match",
+          "jdMatchPercentage": "XX%",
+          "analysis": "Brief explanation of the assessment"
+        }
+      `;
+
+      const results: ResumeMatch[] = [];
+      
+      for (const file of Array.from(files)) {
+        try {
+          const text = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = () => resolve(reader.result?.toString() || "");
+          });
+
+          const filePrompt = `${prompt}\n\nResume Content:\n${text}`;
+          const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+          const result = await model.generateContent(filePrompt);
+          const responseText = await result.response.text();
+          
+          try {
+            const cleanedResponse = responseText.trim();
+            const parsedResponse = JSON.parse(cleanedResponse);
+            
+            results.push({
+              phoneNumber: parsedResponse.phoneNumber || "N/A",
+              ranking: parsedResponse.ranking || "Unable to Analyze",
+              jdMatchPercentage: parsedResponse.jdMatchPercentage || "0%"
+            });
+          } catch (parseError) {
+            console.error("Error parsing response:", parseError);
+            
+            const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              try {
+                const extractedJson = JSON.parse(jsonMatch[0]);
+                results.push({
+                  phoneNumber: extractedJson.phoneNumber || "N/A",
+                  ranking: extractedJson.ranking || "Unable to Analyze",
+                  jdMatchPercentage: extractedJson.jdMatchPercentage || "0%"
+                });
+              } catch (extractError) {
+                results.push({
+                  phoneNumber: "N/A",
+                  ranking: "Error Processing",
+                  jdMatchPercentage: "0%"
+                });
+              }
+            }
+          }
+        } catch (fileError) {
+          console.error(`Error processing file ${file.name}:`, fileError);
+          results.push({
+            phoneNumber: "N/A",
+            ranking: "Error Processing",
+            jdMatchPercentage: "0%"
+          });
+        }
       }
-      setShowResults(true);
-    } catch (error) {
+
+      if (results.length > 0) {
+        setResumeMatches(results);
+        setShowResults(true);
+      } else {
+        setError("No results were generated. Please try again.");
+      }
+    } catch (error: any) {
       console.error("Resume screening failed:", error);
-      alert("Resume screening failed. Please try again.");
+      setError("Error screening resumes. Please try again.");
     } finally {
       setIsScreening(false);
-    }
-  };
-
-  const simulateResumeScreening = async (file: File) => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const selectedJobData = availableJobs.find(job => job._id === selectedJob);
-
-    if (selectedJobData) {
-      // Split the skills array in half for 50% match
-      const halfIndex = Math.ceil(selectedJobData.skillSet.length / 2);
-      const matchedSkills = selectedJobData.skillSet.slice(0, halfIndex);
-      const missingSkills = selectedJobData.skillSet.slice(halfIndex);
-
-      setResumeMatches([{
-        jobTitle: selectedJobData.title,
-        matchPercentage: 50, // Always set to 50%
-        matchedSkills,
-        missingSkills
-      }]);
     }
   };
 
@@ -115,16 +180,15 @@ const ResumeScreen = () => {
       <div className="flex-1 p-8 ml-64">
         <div className="flex justify-between items-start mb-6">
           <h1 className="text-2xl font-semibold text-black">Resume Screening</h1>
-         
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="space-y-6">
+        <div className="bg-white rounded-lg shadow p-12 mx-4">
+          <div className="space-y-8 max-w-5xl mx-auto">
             {/* Job Selection */}
             <div>
-              <label className="block mb-2 text-gray-700 font-medium">Select Job Posting</label>
+              <h3 className="text-lg font-medium mb-3">Select Job Posting</h3>
               <select
-                className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
+                className="w-full p-3 rounded-full border border-gray-300 bg-white text-gray-900"
                 value={selectedJob}
                 onChange={(e) => setSelectedJob(e.target.value)}
                 required
@@ -138,12 +202,12 @@ const ResumeScreen = () => {
 
             {/* Resume Upload */}
             <div>
-              <label className="block mb-2 text-gray-700 font-medium">Upload Resumes</label>
-              <div className="p-6 text-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
+              <h3 className="text-lg font-medium mb-3">Upload Resumes</h3>
+              <div className="p-28 text-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
                 <input
                   type="file"
                   multiple
-                  accept=".pdf,.doc,.docx"
+                  accept=".txt"
                   onChange={handleResumeUpload}
                   className="hidden"
                   id="resume-upload"
@@ -160,11 +224,18 @@ const ResumeScreen = () => {
                     {selectedJob ? 'Click to upload or drag and drop' : 'Please select a job posting first'}
                   </span>
                   <span className="text-gray-500 text-sm">
-                    Supported formats: PDF, DOC, DOCX
+                    Please upload text files (.txt) only
                   </span>
                 </label>
               </div>
             </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="mt-4 p-4 bg-red-100 text-red-700 rounded-lg">
+                {error}
+              </div>
+            )}
 
             {/* Loading State */}
             {isScreening && (
@@ -177,44 +248,26 @@ const ResumeScreen = () => {
             {/* Results */}
             {showResults && resumeMatches.length > 0 && (
               <div className="mt-6">
-                <h3 className="text-lg font-medium mb-4 text-black">Matching Results</h3>
+                <h2 className="text-xl font-semibold mb-4">Screening Results</h2>
                 {resumeMatches.map((match, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow p-4 mb-4 border border-gray-200">
-                    <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-medium text-gray-900">{match.jobTitle}</h4>
-                      <span className={`px-2 py-1 rounded-full text-sm ${
-                        match.matchPercentage >= 70 
-                          ? 'bg-green-100 text-green-800' 
-                          : match.matchPercentage >= 40 
-                          ? 'bg-yellow-100 text-yellow-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {match.matchPercentage}% Match
-                      </span>
-                    </div>
-                    <div className="space-y-3">
+                  <div
+                    key={index}
+                    className="bg-gray-50 rounded-lg p-6 mb-4 border border-gray-200"
+                  >
+                    <h4 className="font-semibold mb-3">Resume {index + 1}</h4>
+                    <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <p className="text-gray-600 mb-2">Matched Skills:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {match.matchedSkills.map((skill, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
+                        <p className="text-gray-600">Phone Number</p>
+                        <p className="font-medium">{match.phoneNumber}</p>
                       </div>
-                      {match.missingSkills.length > 0 && (
-                        <div>
-                          <p className="text-gray-600 mb-2">Missing Skills:</p>
-                          <div className="flex flex-wrap gap-2">
-                            {match.missingSkills.map((skill, idx) => (
-                              <span key={idx} className="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                      <div>
+                        <p className="text-gray-600">Ranking</p>
+                        <p className="font-medium">{match.ranking}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Match Percentage</p>
+                        <p className="font-medium">{match.jdMatchPercentage}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
