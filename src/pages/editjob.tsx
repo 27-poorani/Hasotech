@@ -88,7 +88,7 @@ const EditJob = () => {
         panelists: Object.fromEntries(
           [...Array(jobData.numberOfRounds)].map((_, i) => [
             `round${i + 1}`,
-            jobData.panelists[`round${i + 1}`]
+jobData.panelists[`round${i + 1}` as keyof typeof jobData.panelists]
           ])
         )
       }, {
@@ -232,13 +232,13 @@ const EditJob = () => {
                   <input
                     type="email"
                     className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
-                    value={jobData.panelists[`round${index + 1}`]?.email || ''}
+value={jobData.panelists[`round${index + 1}` as keyof typeof jobData.panelists]?.email || ''}
                     onChange={(e) => setJobData(prev => ({
                       ...prev,
                       panelists: {
                         ...prev.panelists,
                         [`round${index + 1}`]: {
-                          ...prev.panelists[`round${index + 1}`],
+                          ...prev.panelists[`round${index + 1}` as keyof typeof prev.panelists],
                           email: e.target.value
                         }
                       }
@@ -250,13 +250,13 @@ const EditJob = () => {
                   <input
                     type="tel"
                     className="w-full p-3 rounded-lg border border-gray-200 bg-white text-gray-900"
-                    value={jobData.panelists[`round${index + 1}`]?.phoneNumber || ''}
+                    value={jobData.panelists[`round${index + 1}` as keyof typeof jobData.panelists]?.phoneNumber || ''}
                     onChange={(e) => setJobData(prev => ({
                       ...prev,
                       panelists: {
                         ...prev.panelists,
                         [`round${index + 1}`]: {
-                          ...prev.panelists[`round${index + 1}`],
+                          ...prev.panelists[`round${index + 1}` as keyof typeof prev.panelists],
                           phoneNumber: e.target.value
                         }
                       }

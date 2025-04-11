@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useNavigate,Link } from "react-router-dom";
 // @ts-ignore
 import { LoginSocialGoogle } from "reactjs-social-login";
-import axiosInstance from '../utils/axiosConfig';
-import axios from "axios";
 import { authenticateUser } from '../services/authService';
 
 const Login = () => {

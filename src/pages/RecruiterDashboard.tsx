@@ -311,7 +311,7 @@ const RecruiterDashboard = () => {
         return {
           ...candidate,
           availability: {
-            status: 'available',
+            status: 'available' as const,
             preferredSlots: [
               '2024-03-20 10:00 AM',
               '2024-03-21 02:00 PM',

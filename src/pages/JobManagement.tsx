@@ -40,7 +40,7 @@ const JobManagement = () => {
     },
   });
 
-  const handlePostJob = async (e) => {
+  const handlePostJob = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -71,7 +71,7 @@ const JobManagement = () => {
       // Validate panelists for each round
       for (let i = 1; i <= numberOfRounds; i++) {
         const round = `round${i}`;
-        if (!panelists[round]?.email?.trim() || !panelists[round]?.phoneNumber?.trim()) {
+        if (!panelists[round as keyof typeof panelists]?.email?.trim() || !panelists[round as keyof typeof panelists]?.phoneNumber?.trim()) {
           throw new Error(`Please fill in all panelist details for round ${i}`);
         }
       }
@@ -90,7 +90,7 @@ const JobManagement = () => {
         panelists: Object.fromEntries(
           [...Array(numberOfRounds)].map((_, i) => [
             `round${i + 1}`,
-            panelists[`round${i + 1}`]
+panelists[`round${i + 1}` as keyof typeof panelists]
           ])
         )
       };
@@ -119,7 +119,7 @@ const JobManagement = () => {
       }
     } catch (error) {
       console.error("Error creating job:", error);
-      setError(error.response?.data?.message || error.message || "Failed to create job");
+      setError(((error as any).response?.data?.message || (error as Error).message || "Failed to create job") as string);
     } finally {
       setLoading(false);
     }
@@ -314,10 +314,10 @@ const JobManagement = () => {
                       <label className="block mb-2" style={{ color: 'black' }}>Email*</label>
                       <input
                         type="email"
-                        value={panelists[`round${index + 1}`].email}
+value={panelists[`round${index + 1}` as keyof typeof panelists].email}
                         onChange={(e) => setPanelists(prev => ({
                           ...prev,
-                          [`round${index + 1}`]: { ...prev[`round${index + 1}`], email: e.target.value }
+[`round${index + 1}` as keyof typeof panelists]: { ...prev[`round${index + 1}` as keyof typeof panelists], email: e.target.value }
                         }))}
                         required
                         className="w-full px-4 py-2 rounded-lg"
@@ -332,10 +332,10 @@ const JobManagement = () => {
                       <label className="block mb-2" style={{ color: 'black' }}>Phone Number*</label>
                       <input
                         type="tel"
-                        value={panelists[`round${index + 1}`].phoneNumber}
+                        value={panelists[`round${index + 1}` as keyof typeof panelists].phoneNumber}
                         onChange={(e) => setPanelists(prev => ({
                           ...prev,
-                          [`round${index + 1}`]: { ...prev[`round${index + 1}`], phoneNumber: e.target.value }
+[`round${index + 1}` as keyof typeof panelists]: { ...prev[`round${index + 1}` as keyof typeof panelists], phoneNumber: e.target.value }
                         }))}
                         required
                         className="w-full px-4 py-2 rounded-lg"

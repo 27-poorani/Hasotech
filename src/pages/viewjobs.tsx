@@ -12,7 +12,6 @@ interface Job {
   applicants?: number;
 }
 
-import LeftNavigation from '../components/LeftNavigation';
 
 const ViewJobs = () => {
   const navigate = useNavigate();

@@ -38,7 +38,7 @@ const ScheduleInterview = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <LeftNavigation currentPage="interviews" />
+      <LeftNavigation />
       
       <div className="flex-1 p-6 ml-64">
         <div className="flex justify-between items-start mb-6">
