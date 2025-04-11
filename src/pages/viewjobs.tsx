@@ -16,13 +16,7 @@ interface Job {
 const ViewJobs = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [editJobId, setEditJobId] = useState<string | null>(null);
-  const [editJobTitle, setEditJobTitle] = useState("");
-  const [editJobSkills, setEditJobSkills] = useState("");
-  const [editJobOverview, setEditJobOverview] = useState("");
-  const [newJobExperience, setNewJobExperience] = useState("");
-  const [newRecruiterEmail, setNewRecruiterEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+ 
 
   useEffect(() => {
     fetchJobs();
@@ -50,56 +44,9 @@ const ViewJobs = () => {
     }
   };
 
-  const editJob = (job: Job) => {
-    setEditJobId(job._id);
-    setEditJobTitle(job.title);
-    setEditJobSkills(job.skillSet.join(", "));
-    setEditJobOverview(job.description);
-    setNewJobExperience(job.experience);
-    setNewRecruiterEmail(job.recruiterEmail);
-  };
 
-  const handleUpdateJob = async () => {
-    if (!editJobId) return;
-    setLoading(true);
 
-    try {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const token = user?.token;
-      
-      if (!token) {
-        alert('Please login again');
-        return;
-      }
-      
-      const response = await axios.put(`http://localhost:8000/jobs/update/${editJobId}`, {
-        title: editJobTitle,
-        description: editJobOverview,
-        skillSet: editJobSkills.split(',').map(skill => skill.trim()),
-        experience: newJobExperience,
-        recruiterEmail: newRecruiterEmail
-      }, {
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-      });
-      
-      if (response.data.success) {
-        alert('Job updated successfully!');
-        setEditJobId(null);
-        setEditJobTitle('');
-        setEditJobSkills('');
-        setEditJobOverview('');
-        setNewJobExperience('');
-        setNewRecruiterEmail('');
-        fetchJobs();
-      }
-    } catch (error: any) {
-      console.error('Error updating job:', error);
-      alert(error.response?.data?.message || 'Failed to update job');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+ 
   const handleView = (jobId: string) => {
     navigate(`/job-view/${jobId}`);
   };

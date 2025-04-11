@@ -7,7 +7,7 @@ function Signup() {
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
-  const [role, setRole] = useState<string>("Recruiter");
+  const [role] = useState<string>("Recruiter");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);

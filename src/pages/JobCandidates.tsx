@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import LeftNavigation from '../components/LeftNavigation';
 
 const JobCandidates = () => {
   const { jobId } = useParams();
-  const navigate = useNavigate();
   const [job, setJob] = useState<any>(null);
   const [candidates] = useState([
     { 

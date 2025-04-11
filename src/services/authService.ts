@@ -11,7 +11,7 @@ export const authenticateUser = async (email: string, password: string) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     
     // Update password in backend
-    const updateResponse = await fetch("http://localhost:8000/registration/update-credentials", {
+    await fetch("http://localhost:8000/registration/update-credentials", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import LeftNavigation from '../components/LeftNavigation';
-import axios from 'axios';
 
 const ScheduleInterview = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { candidateId } = useParams();
+  useParams();
   const [interviewData, setInterviewData] = useState({
     candidateName: location.state?.candidateName || '',
     position: '',

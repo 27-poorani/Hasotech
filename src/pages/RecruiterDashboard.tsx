@@ -2,71 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-interface Job {
-  id: number;
-  title: string;
-  candidates: number;
-  requiredSkills: string[];
-}
-
-interface ResumeMatch {
-  jobTitle: string;
-  matchPercentage: number;
-  matchedSkills: string[];
-  missingSkills: string[];
-}
-
-interface InterviewSlot {
-  id: number;
-  date: string;
-  time: string;
-  candidateName: string;
-  position: string;
-  interviewerName: string;
-  status: 'scheduled' | 'completed' | 'cancelled';
-}
-
-interface CandidateMatch {
-  id: number;
-  name: string;
-  matchPercentage: number;
-  skills: string[];
-  experience: string;
-  availability?: {
-    status: 'pending' | 'available' | 'not_available';
-    preferredSlots?: string[];
-  };
-}
 
 
 const RecruiterDashboard = () => {
   const navigate = useNavigate();
 
+  
 
-  const [resumeMatches, setResumeMatches] = useState<ResumeMatch[]>([]);
-  const [isScreening, setIsScreening] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [showFetchedResumes, setShowFetchedResumes] = useState(false);
-
-  const [fetchedResumes, setFetchedResumes] = useState<Array<{
-    id: number;
-    name: string;
-    date: string;
-    fileUrl: string;
-  }>>([]);
-
-  const [showScheduleForm, setShowScheduleForm] = useState(false);
-  const [interviewData, setInterviewData] = useState({
-    candidateName: '',
-    position: '',
-    date: '',
-    time: '',
-    interviewerName: '',
-    notes: ''
-  });
-  const [scheduledInterviews, setScheduledInterviews] = useState<InterviewSlot[]>([]);
-
-  const [selectedJob, setSelectedJob] = useState<string>("");
   const [availableJobs, setAvailableJobs] = useState<Array<{
     _id: string,
     title: string,
@@ -76,50 +18,7 @@ const RecruiterDashboard = () => {
     recruiterEmail: string
   }>>([]);
 
-  const [screenedCandidates, setScreenedCandidates] = useState<CandidateMatch[]>([]);
-  const [isScreeningCandidates, setIsScreeningCandidates] = useState(false);
-  const [selectedCandidates, setSelectedCandidates] = useState<number[]>([]);
-
-  const [recentJobs, setRecentJobs] = useState<Array<{
-    _id: string,
-    title: string,
-  }>>([]);
-
-
-  const handleDelete = async (jobId: string) => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const token = user?.token;
-  
-    if (!token) {
-      alert("Authentication required!");
-      return;
-    }
-  
-    if (!window.confirm("Are you sure you want to delete this job?")) {
-      return;
-    }
-  
-    try {
-      const response = await axios.delete(`http://localhost:8000/jobs/delete/${jobId}`, {
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (response.data.success) {
-        alert("Job deleted successfully!");
-        fetchPostedJobs(); // Refresh both job lists
-      } else {
-        throw new Error(response.data.message || 'Failed to delete job');
-      }
-    } catch (error: any) {
-      console.error("Error deleting job:", error);
-      alert(error.response?.data?.message || "Error deleting job. Try again later.");
-    }
-  };
-  
-  // Modify the fetchPostedJobs function
+  // Modify fetchPostedJobs to remove recentJobs setting
   const fetchPostedJobs = async () => {
     try {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -130,7 +29,6 @@ const RecruiterDashboard = () => {
         return;
       }
 
-      // Modified to fetch only jobs for the current recruiter
       const response = await axios.get(`http://localhost:8000/jobs/recruiter/${user._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -139,192 +37,17 @@ const RecruiterDashboard = () => {
 
       if (response.data.success) {
         setAvailableJobs(response.data.data);
-        // Get the most recent 3 jobs
-        const recent = response.data.data
-          .slice(0, 3)
-          .map((job: any) => ({
-            _id: job._id,
-            title: job.title
-          }));
-        setRecentJobs(recent);
       }
     } catch (error) {
       console.error('Error fetching jobs:', error);
     }
   };
 
-  const fetchScheduledInterviews = () => {
-    const storedInterviews = JSON.parse(localStorage.getItem('scheduledInterviews') || '[]');
-    // Sort interviews by date and time
-    const sortedInterviews = storedInterviews.sort((a: any, b: any) => {
-      const dateA = new Date(`${a.date} ${a.time}`);
-      const dateB = new Date(`${b.date} ${b.time}`);
-      return dateA.getTime() - dateB.getTime();
-    });
-    setScheduledInterviews(sortedInterviews);
-  };
-
   useEffect(() => {
     fetchPostedJobs();
-    fetchScheduledInterviews();
   }, []);
 
-  const handleResumeUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!selectedJob) {
-      alert("Please select a job posting first");
-      return;
-    }
 
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-
-    setIsScreening(true);
-    setShowResults(false);
-
-    try {
-      // Process multiple files
-      for (let i = 0; i < files.length; i++) {
-        await simulateResumeScreening(files[i]);
-      }
-    } catch (error) {
-      console.error("Resume screening failed:", error);
-      alert("Resume screening failed. Please try again.");
-    } finally {
-      setIsScreening(false);
-    }
-  };
-
-  const simulateResumeScreening = async (file: File) => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // Simulate extracted skills (in real app, this would come from backend)
-    const extractedSkills = ["JavaScript", "React", "TypeScript", "HTML", "CSS"];
-
-    // Match against each job
-    const matches = availableJobs.map(job => {
-      const matchedSkills = job.skillSet.filter((skill: string) =>
-        extractedSkills.includes(skill)
-      );
-      const missingSkills = job.skillSet.filter((skill: string) =>
-        !extractedSkills.includes(skill)
-      );
-      const matchPercentage = (matchedSkills.length / job.skillSet.length) * 100;
-
-      return {
-        jobTitle: job.title,
-        matchPercentage: Math.round(matchPercentage),
-        matchedSkills,
-        missingSkills
-      };
-    });
-
-    setResumeMatches(matches);
-    setShowResults(true);
-  };
-
-  const handleFetchResumes = () => {
-    // Simulated fetched resumes (in real app, this would come from an API)
-    const mockResumes = [
-      { id: 1, name: "John_Doe_Resume.pdf", date: "2024-03-15", fileUrl: "#" },
-      { id: 2, name: "Jane_Smith_Resume.docx", date: "2024-03-14", fileUrl: "#" },
-      { id: 3, name: "Mike_Johnson_Resume.pdf", date: "2024-03-13", fileUrl: "#" },
-    ];
-    
-    setFetchedResumes(mockResumes);
-    setShowFetchedResumes(true);
-  };
-
-  const handleScheduleInterview = () => {
-    if (!interviewData.candidateName || !interviewData.position || 
-        !interviewData.date || !interviewData.time || !interviewData.interviewerName) {
-      alert('Please fill in all required fields');
-      return;
-    }
-
-    const newInterview: InterviewSlot = {
-      id: scheduledInterviews.length + 1,
-      date: interviewData.date,
-      time: interviewData.time,
-      candidateName: interviewData.candidateName,
-      position: interviewData.position,
-      interviewerName: interviewData.interviewerName,
-      status: 'scheduled'
-    };
-
-    setScheduledInterviews([...scheduledInterviews, newInterview]);
-    
-    // Reset form and close modal
-    setInterviewData({
-      candidateName: '',
-      position: '',
-      date: '',
-      time: '',
-      interviewerName: '',
-      notes: ''
-    });
-    setShowScheduleForm(false);
-
-    alert('Interview scheduled successfully!');
-  };
-
-  const screenCandidatesWithAI = async () => {
-    setIsScreeningCandidates(true);
-    try {
-      // Simulate API call for AI screening
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulated results
-      const results: CandidateMatch[] = [
-        {
-          id: 1,
-          name: "John Doe",
-          matchPercentage: 95,
-          skills: ["React", "TypeScript", "Node.js"],
-          experience: "4 years",
-          availability: { status: 'pending' }
-        },
-        {
-          id: 2,
-          name: "Jane Smith",
-          matchPercentage: 88,
-          skills: ["React", "JavaScript", "MongoDB"],
-          experience: "3 years",
-          availability: { status: 'pending' }
-        },
-        // Add more candidates...
-      ];
-      
-      setScreenedCandidates(results);
-    } catch (error) {
-      console.error("AI screening failed:", error);
-      alert("Screening failed. Please try again.");
-    } finally {
-      setIsScreeningCandidates(false);
-    }
-  };
-
-  const initiateAutoCalls = async (candidateIds: number[]) => {
-    // Simulate automated calls
-    const updatedCandidates = screenedCandidates.map(candidate => {
-      if (candidateIds.includes(candidate.id)) {
-        return {
-          ...candidate,
-          availability: {
-            status: 'available' as const,
-            preferredSlots: [
-              '2024-03-20 10:00 AM',
-              '2024-03-21 02:00 PM',
-              '2024-03-22 11:00 AM'
-            ]
-          }
-        };
-      }
-      return candidate;
-    });
-    
-    setScreenedCandidates(updatedCandidates);
-  };
 
   return (
     <div className="flex min-h-screen bg-white"style={{ marginLeft: '-200px' }}>
